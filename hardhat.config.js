@@ -32,7 +32,7 @@ module.exports = {
         mnemonic: secret.mnemonic
       },
       gas: 'auto',
-      gasPrice: 36.0000001e9
+      gasPrice: 48.0000001e9
     }
   }
 }
