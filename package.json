@@ -1,5 +1,5 @@
 {
-  "name": "hardhat-project",
+  "name": "88mph-scripts",
   "devDependencies": {
     "@nomiclabs/hardhat-web3": "^2.0.0",
     "hardhat": "^2.0.6"
