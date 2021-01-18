@@ -100,12 +100,12 @@ const setPoolWhitelist = {
   type: 'function'
 }
 
-const whitelistPoolAddress = '0x6712BAab01FA2dc7bE6635746Ec2Da6F8Bd73e71'
-const eta = 1609223400
+const whitelistPoolAddress = '0xD4837145c7e13D580904e8431cfD481f9794fC41'
+const eta = 1611016200
 
 const target = '0x03577A2151A10675a9689190fE5D331Ee7ff2517'
 const value = 0
 const signature = ''
 const data = web3.eth.abi.encodeFunctionCall(setPoolWhitelist, [whitelistPoolAddress, 'true'])
-const calldata = web3.eth.abi.encodeFunctionCall(executeTransactionFunctionObj, [target, value, signature, data, eta])
+const calldata = web3.eth.abi.encodeFunctionCall(queueTxFunctionObj, [target, value, signature, data, eta])
 console.log(calldata)
