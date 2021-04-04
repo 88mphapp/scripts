@@ -12,7 +12,7 @@ async function main () {
     `
   }
 
-  const latestBlockNumber = 11785344
+  const latestBlockNumber = 11807498
   const numQueries = 30
   const queryBlockInterval = Math.floor(24 * 60 * 60 / 15)
   const windowSize = 24 * 60 * 60
@@ -32,6 +32,7 @@ async function main () {
     } else {
       const incomingValue = exchangeRate.minus(lastExchangeRate).div(lastExchangeRate).div(windowSize)
       lastExchangeRate = exchangeRate
+      console.log(incomingValue.times(31556952).times(100).toFixed())
       if (ema === 0) {
         // bootstrap EMA with the first window's interest rate
         ema = incomingValue
