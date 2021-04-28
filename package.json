@@ -1,7 +1,8 @@
 {
   "name": "88mph-scripts",
   "scripts": {
-    "update-oracles": "npx hardhat run src/update-oracles.js --network mainnet"
+    "update-oracles": "npx hardhat run src/update-oracles.js --network mainnet",
+    "dump-tokens": "npx hardhat run src/dump-rewards.js --network mainnet"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-web3": "^2.0.0",
