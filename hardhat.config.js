@@ -31,8 +31,7 @@ module.exports = {
       accounts: {
         mnemonic: secret.mnemonic
       },
-      gas: 'auto',
-      gasPrice: 84.0000001e9
+      gasMultiplier: 1.5
     }
   }
 }

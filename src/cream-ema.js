@@ -1,11 +1,13 @@
 const { request, gql } = require('graphql-request')
 const BigNumber = require('bignumber.js')
 
+const tokenName = "FTT"
+
 async function main () {
   const getQueryStringAtBlock = blockNumber => {
     return gql`
     {
-      markets(block: { number: ${blockNumber} }, where: {underlyingSymbol: "ChainLink Token"}) {
+      markets(block: { number: ${blockNumber} }, where: {underlyingSymbol: "${tokenName}"}) {
         exchangeRate
       }
     }
@@ -42,8 +44,8 @@ async function main () {
       }
     }
   }
-  console.log(ema.toFixed())
-  console.log(ema.times(31556952).toFixed())
+  console.log(`EMA: ${ema.toFixed()}`)
+  console.log(`EMA annualized: ${ema.times(31556952).toFixed()}`)
 }
 
 main()

@@ -4,9 +4,9 @@ const IMoneyMarket = require('../abi/IMoneyMarket.json')
 const Dumper = require('../abi/Dumper.json')
 const { web3 } = require('hardhat')
 const BigNumber = require('bignumber.js')
-const dumperAddress = '0x5B3C81C86d17786255904c316bFCB38A46146ef8'
+const dumperAddress = '0x8Cc9ADF88fe0b5C739bD936E9edaAd30578f4265'
 const fromAddress = '0xc0FcF8403e10B65f1D18f1B81b093004B1127275'
-const minReturnMultiplier = 0.99
+const minReturnMultiplier = 0.95
 
 async function main () {
   // claim rewards
@@ -22,6 +22,7 @@ async function main () {
     console.log(`Dumping ${dumpToken}`)
     const { returnAmount, distribution } = await dumperContract.methods.getDumpParams(dumpToken, 1).call()
     const minReturnAmount = BigNumber(returnAmount).times(minReturnMultiplier).integerValue().toFixed()
+    console.log(returnAmount, distribution, minReturnAmount)
     await dumperContract.methods.dump(dumpToken, minReturnAmount, distribution).send({ from: fromAddress })
   }
 
