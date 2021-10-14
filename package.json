@@ -1,7 +1,7 @@
 {
   "name": "88mph-scripts",
   "scripts": {
-    "update-oracles": "npx hardhat run src/update-oracles.js --network mainnet",
+    "update-oracles": "src/update-oracles.sh",
     "dump-tokens": "npx hardhat run src/dump-rewards.js --network mainnet"
   },
   "devDependencies": {
