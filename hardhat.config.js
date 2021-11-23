@@ -25,7 +25,7 @@ module.exports = {
     },
     networks: {
         mainnet: {
-            url: "http://geth.dappnode:8545",
+            url: "https://mainnet.infura.io/v3/9e5f0d08ad19483193cc86092b7512f2",
             chainId: 1,
             from: secret.account,
             accounts: {
@@ -40,7 +40,6 @@ module.exports = {
             accounts: {
                 mnemonic: secret.mnemonic,
             },
-            gasPrice: 40e9,
             gasMultiplier: 1.5,
         },
         avalanche: {
