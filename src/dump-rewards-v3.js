@@ -1,7 +1,9 @@
 const hre = require("hardhat");
 const { web3 } = hre;
 
-const rewardMoneyMarkets = require("../config/reward-money-markets-v3.json")[hre.network.name];
+const rewardMoneyMarkets = require("../config/reward-money-markets-v3.json")[
+    hre.network.name
+];
 const dumpTokens = require("../config/dump-tokens.json")[hre.network.name];
 const IMoneyMarket = require("../abi/IMoneyMarket.json");
 const Dumper = require("../abi/Dumper.json");
@@ -36,10 +38,12 @@ async function main() {
             .times(minReturnMultiplier)
             .integerValue()
             .toFixed();
-        console.log(returnAmount, distribution, minReturnAmount);
-        await dumperContract.methods
-            .dump(dumpToken, minReturnAmount, distribution)
-            .send({ from: fromAddress });
+        if (BigNumber(returnAmount).gt(0)) {
+            console.log(returnAmount, distribution, minReturnAmount);
+            await dumperContract.methods
+                .dump(dumpToken, minReturnAmount, distribution)
+                .send({ from: fromAddress });
+        }
     }
 
     // distribute
