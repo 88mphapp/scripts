@@ -1,18 +1,19 @@
 {
-  "name": "88mph-scripts",
-  "scripts": {
-    "update-oracles": "src/update-oracles.sh",
-    "claim-rewards-v2": "npx hardhat run src/claim-rewards-v2.js --network mainnet",
-    "dump-rewards-v3": "npx hardhat run src/dump-rewards-v3.js --network mainnet"
-  },
-  "devDependencies": {
-    "@nomiclabs/hardhat-web3": "^2.0.0",
-    "hardhat": "^2.6.3"
-  },
-  "dependencies": {
-    "bignumber.js": "^9.0.1",
-    "graphql": "^15.5.0",
-    "graphql-request": "^3.4.0",
-    "web3": "^1.5.2"
-  }
+    "name": "88mph-scripts",
+    "scripts": {
+        "update-oracles": "src/update-oracles.sh",
+        "claim-mainnet-rewards": "npx hardhat run src/claim-mainnet-rewards.ts --network mainnet",
+        "dump-mainnet-rewards": "npx hardhat run src/dump-mainnet-rewards.js --network mainnet"
+    },
+    "devDependencies": {
+        "@nomiclabs/hardhat-web3": "^2.0.0",
+        "hardhat": "^2.6.3",
+        "ts-node": "^10.4.0"
+    },
+    "dependencies": {
+        "bignumber.js": "^9.0.1",
+        "graphql": "^15.5.0",
+        "graphql-request": "^3.4.0",
+        "web3": "^1.5.2"
+    }
 }
