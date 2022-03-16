@@ -7,6 +7,8 @@ const IMoneyMarket = require("../abi/IMoneyMarket.json");
 const CompoundLens = require("../abi/CompoundLens.json");
 const ERC20 = require("../abi/ERC20.json");
 const Rewards = require("../abi/Rewards.json");
+const AaveProtocolDataProvider = require("../abi/AaveProtocolDataProvider.json");
+const StakedAaveController = require("../abi/StakedAaveController.json");
 
 // addresses
 const fromAddress = "0xc0FcF8403e10B65f1D18f1B81b093004B1127275";
@@ -14,6 +16,8 @@ const compoundLensAddress = "0xd513d22422a3062Bd342Ae374b4b9c20E0a9a074";
 const compAddress = "0xc00e94cb662c3520282e6f5717214004a7f26888";
 const comptrollerAddress = "0x3d9819210a31b4961b30ef54be2aed79b9c9cd3b";
 const farmAddress = "0xa0246c9032bC3A600820415aE600c6388619A14D";
+const aaveDataProviderAddress = "0x057835Ad21a177dbdd3090bB1CAE03EaCF78Fc6d";
+const stakedAaveControllerAddress = "0xd784927Ff2f95ba542BfC824c8a8a98F3495f6b5";
 
 // constants
 const PRECISION = 1e18;
@@ -156,13 +160,54 @@ async function main() {
     return rewardPools;
   }
 
+  const getAaveRewards = async () => {
+    const aaveDataProvider = new web3.eth.Contract(AaveProtocolDataProvider, aaveDataProviderAddress);
+    const stkaaveController = new web3.eth.Contract(StakedAaveController, stakedAaveControllerAddress);
+
+    let aTokens: string[] = [];
+    const aTokenData = await aaveDataProvider.methods.getAllATokens().call();
+    for (let token in aTokenData) {
+      aTokens.push(aTokenData[token].tokenAddress);
+    }
+
+    const allPools = getPoolInfoList(NETWORK_ID);
+    const aavePools = allPools.filter(
+      (poolInfo) => poolInfo.protocol === 'Aave'
+    );
+
+    let stkaaveRewardsToken = new BigNumber(0);
+    const rewardPools: any[] = [];
+    await Promise.all(
+      aavePools.map(async (poolInfo) => {
+        // unclaimed rewards
+        await stkaaveController.methods
+          .getRewardsBalance(aTokens, poolInfo.moneyMarket)
+          .call()
+          .then((result: any) => {
+            const rewardUnclaimed = new BigNumber(result).div(
+              PRECISION
+            );
+            stkaaveRewardsToken = stkaaveRewardsToken.plus(rewardUnclaimed);
+          });
+
+        if (stkaaveRewardsToken.gt(1)) {
+          rewardPools.push(poolInfo.moneyMarket);
+        }
+      })
+    );
+
+    return rewardPools;
+  }
+
   // claim rewards
   const compoundRewardPools = await getCompoundRewards();
   const harvestRewardPools = await getHarvestRewards();
+  const aaveRewardPools = await getAaveRewards();
 
   let rewardMoneyMarkets: any[] = [];
   rewardMoneyMarkets = rewardMoneyMarkets.concat(compoundRewardPools);
   rewardMoneyMarkets = rewardMoneyMarkets.concat(harvestRewardPools);
+  rewardMoneyMarkets = rewardMoneyMarkets.concat(aaveRewardPools);
   for (const moneyMarket of rewardMoneyMarkets) {
     console.log(`Claiming rewards from ${moneyMarket}`);
     const moneyMarketContract = new web3.eth.Contract(
